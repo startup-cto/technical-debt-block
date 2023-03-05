@@ -1,8 +1,9 @@
 import { TreeItem } from "@githubnext/blocks";
 
 export const makeLoadTechDebt =
-  (loadCommits: (path: string) => Promise<unknown[]>) => (tree: TreeItem[]) =>
-    Promise.all(
+  (loadCommits: (path: string) => Promise<unknown[]>) =>
+  async (tree: TreeItem[]) => {
+    const treeWithCommitCount = await Promise.all(
       tree
         .filter(
           (item) => item.type === "blob" && item.path?.match(/\.(tsx?|jsx?)$/)
@@ -12,11 +13,11 @@ export const makeLoadTechDebt =
           size: size ?? 0,
           commitCount: (await loadCommits(path)).length,
         }))
-    ).then((results) => {
-      return results
-        .map((result) => ({
-          ...result,
-          complexity: result.size * result.commitCount,
-        }))
-        .sort((file1, file2) => file2.complexity - file1.complexity);
-    });
+    );
+    return treeWithCommitCount
+      .map((result) => ({
+        ...result,
+        complexity: result.size * result.commitCount,
+      }))
+      .sort((file1, file2) => file2.complexity - file1.complexity);
+  };
