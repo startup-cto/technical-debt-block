@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 
-const path = require("path");
-const fs = require("fs");
-const { exec } = require("child_process");
+import path from 'node:path';
+import fs from 'node:fs';
+import { exec } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 // Loop over each directory inside of the dist directory and generate a tar ball for each of them
 const distDir = path.resolve(__dirname, "./dist");
