@@ -1,0 +1,31 @@
+name: Create Release
+on:
+  push:
+    tags:
+      - "*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Compile assets
+        run: yarn build
+
+      - name: Create block tarballs
+        run: node ./release.ts
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*.tar.gz
