@@ -2,7 +2,7 @@ import {FolderBlockProps} from "@githubnext/blocks";
 import {Box} from "@primer/react";
 import {useEffect, useState} from "react";
 
-export default function ExampleFolderBlock(props: FolderBlockProps) {
+export default function TechDebtBlock(props: FolderBlockProps) {
     const [data, setData] = useState<{ path: string, commitCount: number, size: number, complexity: number }[]>([])
     useEffect(() => {
         const {owner, repo} = props.context;

@@ -1,19 +1,10 @@
 [
   {
-    "type": "file",
-    "id": "file-block",
-    "title": "Example File Block",
-    "description": "A basic file block",
-    "entry": "blocks/example-file-block/index.tsx",
-    "matches": ["*"],
-    "example_path": "https://github.com/facebook/react/blob/main/packages/react-dom/index.js"
-  },
-  {
     "type": "folder",
-    "id": "folder-block",
-    "title": "Example Folder Block",
-    "description": "A basic folder block",
-    "entry": "blocks/example-folder-block.tsx",
+    "id": "tech-debt-block",
+    "title": "Tech Debt Block",
+    "description": "Allows to discover which files in a folder have the most tech debt",
+    "entry": "blocks/TechDebtBlock.tsx",
     "matches": ["*"],
     "example_path": "https://github.com/githubocto/flat"
   }
