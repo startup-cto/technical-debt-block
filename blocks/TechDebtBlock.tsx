@@ -1,6 +1,7 @@
 import { FolderBlockProps } from "@githubnext/blocks";
 import { Box } from "@primer/react";
 import { useEffect, useState } from "react";
+import { makeLoadTechDebt } from "./makeLoadTechDebt";
 
 export default function TechDebtBlock(props: FolderBlockProps) {
   const [data, setData] = useState<
@@ -12,32 +13,14 @@ export default function TechDebtBlock(props: FolderBlockProps) {
     tree,
   } = props;
   useEffect(() => {
-    void Promise.all(
-      tree
-        .filter(
-          (item) => item.type === "blob" && item.path?.match(/\.(tsx?|jsx?)$/)
-        )
-        .map(async ({ path = "/", size }) => ({
-          path,
-          size: size ?? 0,
-          commitCount: (
-            await onRequestGitHubEndpoint("GET /repos/{owner}/{repo}/commits", {
-              path,
-              owner,
-              repo,
-            })
-          ).length,
-        }))
-    ).then((results) => {
-      setData(
-        results
-          .map((result) => ({
-            ...result,
-            complexity: result.size * result.commitCount,
-          }))
-          .sort((file1, file2) => file2.complexity - file1.complexity)
-      );
-    });
+    const loadTechDebt = makeLoadTechDebt((path: string) =>
+      onRequestGitHubEndpoint("GET /repos/{owner}/{repo}/commits", {
+        path,
+        owner,
+        repo,
+      })
+    );
+    void loadTechDebt(tree).then(setData);
   }, [owner, repo, onRequestGitHubEndpoint, tree]);
   if (data.length === 0) {
     return <Box>Loading</Box>;
