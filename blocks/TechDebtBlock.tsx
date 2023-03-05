@@ -1,5 +1,6 @@
 import { FolderBlockProps } from "@githubnext/blocks";
 import { Box } from "@primer/react";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { makeLoadTechDebt } from "./makeLoadTechDebt";
 
@@ -18,6 +19,7 @@ export default function TechDebtBlock(props: FolderBlockProps) {
         path,
         owner,
         repo,
+        since: dayjs().subtract(6, "months").toISOString(),
       })
     );
     void loadTechDebt(tree).then(setData);
