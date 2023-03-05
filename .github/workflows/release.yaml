@@ -14,16 +14,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: yarn lint
+        run: pnpm lint
 
       - name: Compile assets
-        run: yarn build
+        run: pnpm build
 
       - name: Create block tarballs
         run: node ./release.ts
