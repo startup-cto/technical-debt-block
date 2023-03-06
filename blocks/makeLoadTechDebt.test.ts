@@ -23,4 +23,30 @@ describe("makeLoadTechDebt", () => {
       ])
     ).toContainEqual(expect.objectContaining({ commitCount }));
   });
+
+  it("filters out folders", async () => {
+    const loadTechDebt = makeLoadTechDebt(() => Promise.resolve([]));
+
+    expect(
+      await loadTechDebt([
+        {
+          type: "tree",
+          path: "/test.ts",
+        },
+      ])
+    ).toEqual([]);
+  });
+
+  it("filters out non-code extensions", async () => {
+    const loadTechDebt = makeLoadTechDebt(() => Promise.resolve([]));
+
+    expect(
+      await loadTechDebt([
+        {
+          type: "blob",
+          path: "/test.png",
+        },
+      ])
+    ).toEqual([]);
+  });
 });
