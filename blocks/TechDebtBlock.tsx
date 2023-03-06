@@ -54,7 +54,8 @@ export default function TechDebtBlock(props: FolderBlockProps) {
               >
                 {path}
                 <ActionList.TrailingVisual>
-                  {commitCount} commits, {size} kB size, {complexity} complexity
+                  {commitCount} commits, {size / 1024} kB size, {complexity}{" "}
+                  complexity
                 </ActionList.TrailingVisual>
               </ActionList.Item>
             ))}
