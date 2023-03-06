@@ -1,45 +1,15 @@
 import { FolderBlockProps } from "@githubnext/blocks";
-import { ActionList, Box } from "@primer/react";
+import { Box } from "@primer/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { makeLoadTechDebt } from "./makeLoadTechDebt";
+import { File } from "./File";
+import { FileList } from "./FileList";
 
 type Props = Pick<
   FolderBlockProps,
   "context" | "tree" | "onRequestGitHubEndpoint" | "onNavigateToPath"
 >;
-
-interface File {
-  path: string;
-  commitCount: number;
-  size: number;
-  complexity: number;
-}
-
-function FileList({
-  files,
-  onNavigateToPath,
-}: {
-  files: File[];
-  onNavigateToPath: (path: string) => void;
-}) {
-  if (files.length === 0) {
-    return <Box>Loading</Box>;
-  }
-  return (
-    <ActionList>
-      {files.map(({ path, commitCount, size, complexity }) => (
-        <ActionList.Item key={path} onClick={() => onNavigateToPath(path)}>
-          {path}
-          <ActionList.TrailingVisual>
-            {commitCount} commits, {size / 1024} kB size, {complexity}{" "}
-            complexity
-          </ActionList.TrailingVisual>
-        </ActionList.Item>
-      ))}
-    </ActionList>
-  );
-}
 
 export default function TechDebtBlock({
   context: { owner, repo },
