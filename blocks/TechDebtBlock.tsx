@@ -4,15 +4,20 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { makeLoadTechDebt } from "./makeLoadTechDebt";
 
-export default function TechDebtBlock(props: FolderBlockProps) {
+type Props = Pick<
+  FolderBlockProps,
+  "context" | "tree" | "onRequestGitHubEndpoint" | "onNavigateToPath"
+>;
+
+export default function TechDebtBlock({
+  context: { owner, repo },
+  onNavigateToPath,
+  onRequestGitHubEndpoint,
+  tree,
+}: Props) {
   const [data, setData] = useState<
     { path: string; commitCount: number; size: number; complexity: number }[]
   >([]);
-  const {
-    context: { owner, repo },
-    onRequestGitHubEndpoint,
-    tree,
-  } = props;
   useEffect(() => {
     const loadTechDebt = makeLoadTechDebt((path: string) =>
       onRequestGitHubEndpoint("GET /repos/{owner}/{repo}/commits", {
@@ -50,7 +55,7 @@ export default function TechDebtBlock(props: FolderBlockProps) {
             {data.map(({ path, commitCount, size, complexity }) => (
               <ActionList.Item
                 key={path}
-                onClick={() => props.onNavigateToPath(path)}
+                onClick={() => onNavigateToPath(path)}
               >
                 {path}
                 <ActionList.TrailingVisual>
