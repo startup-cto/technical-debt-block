@@ -83,4 +83,21 @@ describe("makeLoadTechDebt", () => {
       ])
     ).toEqual([]);
   });
+
+  it("limits to the top 30 files", async () => {
+    const commitCount = 5;
+    const loadTechDebt = makeLoadTechDebt(() =>
+      Promise.resolve(Array.from({ length: commitCount }).fill({}))
+    );
+
+    expect(
+      await loadTechDebt(
+        new Array(35).fill({
+          type: "blob",
+          path: "/test.ts",
+          size: 5,
+        })
+      )
+    ).toHaveLength(30);
+  });
 });

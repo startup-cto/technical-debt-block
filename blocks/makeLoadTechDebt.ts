@@ -20,5 +20,6 @@ export const makeLoadTechDebt =
         complexity: result.size * result.commitCount,
       }))
       .filter((file) => file.complexity > 0)
-      .sort((file1, file2) => file2.complexity - file1.complexity);
+      .sort((file1, file2) => file2.complexity - file1.complexity)
+      .slice(0, 30);
   };
