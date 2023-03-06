@@ -45,3 +45,17 @@ export const Loading: Story = {
       }),
   },
 };
+
+export const Empty: Story = {
+  args: {
+    context: {
+      folder: "/",
+      path: "/",
+      repo: "repo",
+      sha: "sha",
+      owner: "owner",
+    },
+    tree: [],
+    onRequestGitHubEndpoint: () => Promise.resolve([]),
+  },
+};
