@@ -16,7 +16,9 @@
     "@primer/react": "35.20.0",
     "dayjs": "^1.11.7",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "react-is": "^18.2.0",
+    "styled-components": "^5.3.8"
   },
   "devDependencies": {
     "@jest/globals": "^29.4.2",
