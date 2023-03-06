@@ -28,3 +28,20 @@ export const Default: Story = {
     onRequestGitHubEndpoint: () => Promise.resolve([]),
   },
 };
+
+export const Loading: Story = {
+  args: {
+    context: {
+      folder: "/",
+      path: "/",
+      repo: "repo",
+      sha: "sha",
+      owner: "owner",
+    },
+    tree: [{ type: "blob", path: "/test.ts", size: 3000 }],
+    onRequestGitHubEndpoint: () =>
+      new Promise(() => {
+        // Never return
+      }),
+  },
+};
