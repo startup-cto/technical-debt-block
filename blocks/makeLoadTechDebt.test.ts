@@ -19,6 +19,7 @@ describe("makeLoadTechDebt", () => {
         {
           type: "blob",
           path: "/test.ts",
+          size: 5,
         },
       ])
     ).toContainEqual(expect.objectContaining({ commitCount }));
@@ -64,6 +65,20 @@ describe("makeLoadTechDebt", () => {
         {
           type: "blob",
           path: "/test.png",
+        },
+      ])
+    ).toEqual([]);
+  });
+
+  it("filters out files with complexity 0", async () => {
+    const loadTechDebt = makeLoadTechDebt(() => Promise.resolve([]));
+
+    expect(
+      await loadTechDebt([
+        {
+          type: "blob",
+          path: "/test.ts",
+          size: 10,
         },
       ])
     ).toEqual([]);
