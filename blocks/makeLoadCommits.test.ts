@@ -23,4 +23,24 @@ describe("makeLoadCommits", () => {
 
     expect(response).toBeInstanceOf(Array);
   });
+
+  it("loads multiple pages of commits", async () => {
+    const length = 310;
+    const data = new Array(length).fill({});
+    const onRequestGitHubEndpoint = (
+      _path: string,
+      { per_page = 30, page = 1 }: any
+    ) => Promise.resolve(data.slice((page - 1) * per_page, page * per_page));
+    const loadCommits = makeLoadCommits(onRequestGitHubEndpoint);
+
+    const response = await loadCommits({
+      path: "/rush.json",
+      owner: "startup-cto",
+      repo: "blog",
+      sha: "main",
+      since: dayjs().subtract(6, "months").toISOString(),
+    });
+
+    expect(response).toHaveLength(length);
+  });
 });

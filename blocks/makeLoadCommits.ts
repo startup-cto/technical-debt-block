@@ -3,7 +3,7 @@ import { FolderBlockProps } from "@githubnext/blocks";
 export function makeLoadCommits(
   onRequestGitHubEndpoint: FolderBlockProps["onRequestGitHubEndpoint"]
 ) {
-  return function ({
+  return async function ({
     path,
     owner,
     repo,
@@ -16,13 +16,25 @@ export function makeLoadCommits(
     sha: string;
     since: string;
   }) {
-    return onRequestGitHubEndpoint("GET /repos/{owner}/{repo}/commits", {
-      path,
-      owner,
-      repo,
-      sha,
-      since,
-      per_page: 100,
-    });
+    const result = [];
+    let page = 1;
+    let nextPage: unknown[];
+    do {
+      nextPage = await onRequestGitHubEndpoint(
+        "GET /repos/{owner}/{repo}/commits",
+        {
+          path,
+          owner,
+          repo,
+          sha,
+          since,
+          page,
+          per_page: 100,
+        }
+      );
+      result.push(...nextPage);
+      page++;
+    } while (nextPage.length > 0);
+    return result;
   };
 }
