@@ -26,6 +26,7 @@ export default function TechDebtBlock({
         repo,
         sha,
         since: dayjs().subtract(6, "months").toISOString(),
+        per_page: 100,
       })
     );
     void loadTechDebt(tree).then(setFiles);
