@@ -27,6 +27,7 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.0",
     "@jest/globals": "^29.4.2",
+    "@octokit/core": "^4.2.0",
     "@primer/css": "^20.8.3",
     "@storybook/addon-essentials": "^7.0.0-beta.61",
     "@storybook/addon-interactions": "^7.0.0-beta.61",
