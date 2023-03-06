@@ -9,15 +9,45 @@ type Props = Pick<
   "context" | "tree" | "onRequestGitHubEndpoint" | "onNavigateToPath"
 >;
 
+interface File {
+  path: string;
+  commitCount: number;
+  size: number;
+  complexity: number;
+}
+
+function FileList({
+  files,
+  onNavigateToPath,
+}: {
+  files: File[];
+  onNavigateToPath: (path: string) => void;
+}) {
+  if (files.length === 0) {
+    return <Box>Loading</Box>;
+  }
+  return (
+    <ActionList>
+      {files.map(({ path, commitCount, size, complexity }) => (
+        <ActionList.Item key={path} onClick={() => onNavigateToPath(path)}>
+          {path}
+          <ActionList.TrailingVisual>
+            {commitCount} commits, {size / 1024} kB size, {complexity}{" "}
+            complexity
+          </ActionList.TrailingVisual>
+        </ActionList.Item>
+      ))}
+    </ActionList>
+  );
+}
+
 export default function TechDebtBlock({
   context: { owner, repo },
   onNavigateToPath,
   onRequestGitHubEndpoint,
   tree,
 }: Props) {
-  const [data, setData] = useState<
-    { path: string; commitCount: number; size: number; complexity: number }[]
-  >([]);
+  const [files, setFiles] = useState<File[]>([]);
   useEffect(() => {
     const loadTechDebt = makeLoadTechDebt((path: string) =>
       onRequestGitHubEndpoint("GET /repos/{owner}/{repo}/commits", {
@@ -27,11 +57,8 @@ export default function TechDebtBlock({
         since: dayjs().subtract(6, "months").toISOString(),
       })
     );
-    void loadTechDebt(tree).then(setData);
+    void loadTechDebt(tree).then(setFiles);
   }, [owner, repo, onRequestGitHubEndpoint, tree]);
-  if (data.length === 0) {
-    return <Box>Loading</Box>;
-  }
   return (
     <Box p={4}>
       <Box
@@ -51,20 +78,7 @@ export default function TechDebtBlock({
           This is the folder content.
         </Box>
         <Box p={4}>
-          <ActionList>
-            {data.map(({ path, commitCount, size, complexity }) => (
-              <ActionList.Item
-                key={path}
-                onClick={() => onNavigateToPath(path)}
-              >
-                {path}
-                <ActionList.TrailingVisual>
-                  {commitCount} commits, {size / 1024} kB size, {complexity}{" "}
-                  complexity
-                </ActionList.TrailingVisual>
-              </ActionList.Item>
-            ))}
-          </ActionList>
+          <FileList onNavigateToPath={onNavigateToPath} files={files} />
         </Box>
       </Box>
     </Box>
