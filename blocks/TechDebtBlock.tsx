@@ -17,7 +17,7 @@ export default function TechDebtBlock({
   onRequestGitHubEndpoint,
   tree,
 }: Props) {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<File[] | null>(null);
   useEffect(() => {
     const loadTechDebt = makeLoadTechDebt((path: string) =>
       onRequestGitHubEndpoint("GET /repos/{owner}/{repo}/commits", {
@@ -48,7 +48,7 @@ export default function TechDebtBlock({
           This is the folder content.
         </Box>
         <Box p={4}>
-          {files.length === 0 ? (
+          {files == null ? (
             <Spinner />
           ) : (
             <FileList onNavigateToPath={onNavigateToPath} files={files} />

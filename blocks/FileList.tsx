@@ -8,6 +8,10 @@ export function FileList({
   files: File[];
   onNavigateToPath: (path: string) => void;
 }) {
+  if (files.length === 0) {
+    return <>No files found</>;
+  }
+
   return (
     <ActionList>
       {files.map(({ path, commitCount, size, complexity }) => (
