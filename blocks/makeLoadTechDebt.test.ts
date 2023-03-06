@@ -7,4 +7,20 @@ describe("makeLoadTechDebt", () => {
 
     expect(await loadTechDebt([])).toEqual([]);
   });
+
+  it("returns the commit count for the path", async () => {
+    const commitCount = 5;
+    const loadTechDebt = makeLoadTechDebt(() =>
+      Promise.resolve(Array.from({ length: commitCount }).fill({}))
+    );
+
+    expect(
+      await loadTechDebt([
+        {
+          type: "blob",
+          path: "/test.ts",
+        },
+      ])
+    ).toContainEqual(expect.objectContaining({ commitCount }));
+  });
 });
