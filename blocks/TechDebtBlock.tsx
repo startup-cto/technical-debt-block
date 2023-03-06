@@ -12,7 +12,7 @@ type Props = Pick<
 >;
 
 export default function TechDebtBlock({
-  context: { owner, repo },
+  context: { owner, repo, sha },
   onNavigateToPath,
   onRequestGitHubEndpoint,
   tree,
@@ -24,6 +24,7 @@ export default function TechDebtBlock({
         path,
         owner,
         repo,
+        sha,
         since: dayjs().subtract(6, "months").toISOString(),
       })
     );
