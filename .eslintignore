@@ -3,4 +3,4 @@ dist
 node_modules
 
 # Ignore as it is not covered by tsconfig.json
-release.ts
+release.js
