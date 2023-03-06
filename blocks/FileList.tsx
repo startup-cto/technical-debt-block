@@ -1,5 +1,5 @@
 import { File } from "./File";
-import { ActionList, Box } from "@primer/react";
+import { ActionList } from "@primer/react";
 
 export function FileList({
   files,
@@ -8,9 +8,6 @@ export function FileList({
   files: File[];
   onNavigateToPath: (path: string) => void;
 }) {
-  if (files.length === 0) {
-    return <Box>Loading</Box>;
-  }
   return (
     <ActionList>
       {files.map(({ path, commitCount, size, complexity }) => (

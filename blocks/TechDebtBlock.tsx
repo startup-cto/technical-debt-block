@@ -1,5 +1,5 @@
 import { FolderBlockProps } from "@githubnext/blocks";
-import { Box } from "@primer/react";
+import { Box, Spinner } from "@primer/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { makeLoadTechDebt } from "./makeLoadTechDebt";
@@ -48,7 +48,11 @@ export default function TechDebtBlock({
           This is the folder content.
         </Box>
         <Box p={4}>
-          <FileList onNavigateToPath={onNavigateToPath} files={files} />
+          {files.length === 0 ? (
+            <Spinner />
+          ) : (
+            <FileList onNavigateToPath={onNavigateToPath} files={files} />
+          )}
         </Box>
       </Box>
     </Box>
