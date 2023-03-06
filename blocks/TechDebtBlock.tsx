@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { makeLoadTechDebt } from "./makeLoadTechDebt";
 import { File } from "./File";
 import { FileList } from "./FileList";
+import { makeLoadCommits } from "./makeLoadCommits";
 
 type Props = Pick<
   FolderBlockProps,
@@ -19,14 +20,14 @@ export default function TechDebtBlock({
 }: Props) {
   const [files, setFiles] = useState<File[] | null>(null);
   useEffect(() => {
+    const loadCommits = makeLoadCommits(onRequestGitHubEndpoint);
     const loadTechDebt = makeLoadTechDebt((path: string) =>
-      onRequestGitHubEndpoint("GET /repos/{owner}/{repo}/commits", {
+      loadCommits({
         path,
         owner,
         repo,
         sha,
         since: dayjs().subtract(6, "months").toISOString(),
-        per_page: 100,
       })
     );
     void loadTechDebt(tree).then(setFiles);
