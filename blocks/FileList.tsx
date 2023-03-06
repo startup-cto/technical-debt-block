@@ -18,8 +18,8 @@ export function FileList({
         <ActionList.Item key={path} onClick={() => onNavigateToPath(path)}>
           {path}
           <ActionList.TrailingVisual>
-            {commitCount} commits, {(size / 1024).toFixed(0)} kB size,{" "}
-            {complexity} complexity
+            {commitCount} commit{commitCount === 1 ? "" : "s"},{" "}
+            {(size / 1024).toFixed(0)} kB size, {complexity} complexity
           </ActionList.TrailingVisual>
         </ActionList.Item>
       ))}
