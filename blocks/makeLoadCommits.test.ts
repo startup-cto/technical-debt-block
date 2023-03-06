@@ -8,9 +8,9 @@ describe("makeLoadCommits", () => {
   it("loads an array of commits", async () => {
     const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
     const onRequestGitHubEndpoint: FolderBlockProps["onRequestGitHubEndpoint"] =
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      async (route, options) => (await octokit.request(route, options)).data;
+      async (...parameters: Parameters<typeof octokit.request>) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        (await octokit.request(...parameters)).data;
     const loadCommits = makeLoadCommits(onRequestGitHubEndpoint);
 
     const response = await loadCommits({
