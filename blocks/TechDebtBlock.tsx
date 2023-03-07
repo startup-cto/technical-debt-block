@@ -21,6 +21,14 @@ export default function TechDebtBlock({
   tree,
 }: Props) {
   const [files, setFiles] = useState<File[] | null>(null);
+  const defaultKeys = ["ts", "js", "tsx", "jsx", "css", "json", "yml", "yaml"];
+  const availableKeys = tree
+    .map((treeItem) => getFileExtension(treeItem.path ?? ""))
+    .filter((extension) => extension !== "");
+  const [selectedExtensions, onSelectExtensions] = useState(
+    defaultKeys.filter((key) => availableKeys.includes(key))
+  );
+
   useEffect(() => {
     const loadCommits = makeLoadCommits(onRequestGitHubEndpoint);
     const loadTechDebt = makeLoadTechDebt((path: string) =>
@@ -32,16 +40,12 @@ export default function TechDebtBlock({
         since: dayjs().subtract(6, "months").toISOString(),
       })
     );
-    void loadTechDebt(tree).then(setFiles);
-  }, [owner, repo, onRequestGitHubEndpoint, tree]);
-
-  const defaultKeys = ["ts", "js", "tsx", "jsx", "css", "json", "yml", "yaml"];
-  const availableKeys = tree
-    .map((treeItem) => getFileExtension(treeItem.path ?? ""))
-    .filter((extension) => extension !== "");
-  const [selectedExtensions, onSelectExtensions] = useState(
-    defaultKeys.filter((key) => availableKeys.includes(key))
-  );
+    void loadTechDebt(
+      tree.filter((treeItem) =>
+        selectedExtensions.includes(getFileExtension(treeItem.path ?? ""))
+      )
+    ).then(setFiles);
+  }, [owner, repo, onRequestGitHubEndpoint, tree, selectedExtensions]);
 
   return (
     <Box p={4}>
@@ -58,6 +62,7 @@ export default function TechDebtBlock({
           borderBottomWidth={1}
           borderBottomStyle="solid"
           borderColor="border.default"
+          style={{ display: "flex", gap: "1rem" }}
         >
           <ExtensionSelector
             selectedExtensions={selectedExtensions}
