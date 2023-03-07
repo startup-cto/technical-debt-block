@@ -20,7 +20,8 @@ export default function TechDebtBlock({
   onRequestGitHubEndpoint,
   tree,
 }: Props) {
-  const [files, setFiles] = useState<File[] | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(true);
   const defaultKeys = ["ts", "js", "tsx", "jsx", "css", "json", "yml", "yaml"];
   const availableKeys = [
     ...new Set(
@@ -45,11 +46,15 @@ export default function TechDebtBlock({
         since: dayjs().subtract(6, "months").toISOString(),
       })
     );
+    setLoading(true);
     void loadTechDebt(
       tree.filter((treeItem) =>
         selectedExtensions.includes(getFileExtension(treeItem.path ?? ""))
       )
-    ).then(setFiles);
+    ).then((files) => {
+      setFiles(files);
+      setLoading(false);
+    });
   }, [owner, repo, onRequestGitHubEndpoint, tree, selectedExtensions]);
 
   return (
@@ -76,7 +81,7 @@ export default function TechDebtBlock({
           />
         </Box>
         <Box p={4}>
-          {files == null ? (
+          {loading ? (
             <Spinner />
           ) : (
             <FileList
