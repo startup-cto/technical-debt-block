@@ -5,9 +5,7 @@ export const makeLoadTechDebt =
   async (tree: TreeItem[]) => {
     const treeWithCommitCount = await Promise.all(
       tree
-        .filter(
-          (item) => item.type === "blob" && item.path?.match(/\.(tsx?|jsx?)$/)
-        )
+        .filter((item) => item.type === "blob")
         .map(async ({ path = "/", size }) => ({
           path,
           size: size ?? 0,

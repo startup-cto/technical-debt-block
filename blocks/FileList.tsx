@@ -9,7 +9,7 @@ export function FileList({
   onNavigateToPath: (path: string) => void;
 }) {
   if (files.length === 0) {
-    return <>No files found</>;
+    return <>No files found for filtered extensions</>;
   }
 
   return (

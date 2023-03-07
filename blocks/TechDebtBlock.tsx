@@ -69,7 +69,12 @@ export default function TechDebtBlock({
           {files == null ? (
             <Spinner />
           ) : (
-            <FileList onNavigateToPath={onNavigateToPath} files={files} />
+            <FileList
+              onNavigateToPath={onNavigateToPath}
+              files={files.filter((file) =>
+                selectedExtensions.includes(getFileExtension(file.path))
+              )}
+            />
           )}
         </Box>
       </Box>
