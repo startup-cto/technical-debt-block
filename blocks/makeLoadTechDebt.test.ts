@@ -92,11 +92,11 @@ describe("makeLoadTechDebt", () => {
 
     expect(
       await loadTechDebt(
-        new Array(35).fill({
+        new Array(35).fill(null).map(() => ({
           type: "blob",
           path: "/test.ts",
           size: 5,
-        })
+        }))
       )
     ).toHaveLength(30);
   });
