@@ -3,7 +3,7 @@
     "type": "folder",
     "id": "tech-debt-block",
     "title": "Tech Debt Block",
-    "description": "Allows to discover which files in a folder have the most tech debt",
+    "description": "Show the top 30 files in a folder sorted by technical debt. See the block README for details.",
     "entry": "blocks/TechDebtBlock.tsx",
     "matches": ["*"],
     "example_path": "https://github.com/githubocto/flat"

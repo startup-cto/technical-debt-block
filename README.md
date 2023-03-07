@@ -10,3 +10,15 @@ This GitHub block allows to discover technical debt in a repository and to rough
 3. On top, select the button labelled `Block: ...` and paste the url of this repo ([`https://github.com/startup-cto/technical-debt-block`](https://github.com/startup-cto/technical-debt-block)) there.
 4. Explore your technical debt.
 
+## How does it work
+
+This block is meant to help prioritize which files to clean up first. For this, it calculates a complexity for each file.
+Complexity is the product of the file size and the number of commits that touched the file over the last 6 months.
+Files that have not been touched in the last 6 months will be filtered out.
+
+The file size is a proxy for the number of lines in the file, which is a proxy for how complex the file itself is.
+It could make sense to use a more accurate measure like cyclomatic complexity for each file, but usually file size is
+good enough to make a first assessment.
+
+The number of commits in the last 6 months is a proxy for how often a file will be touched in the near future.
+If a file is not touched for a while, then even if it is quite complex, refactoring it might not be worth it right now.
