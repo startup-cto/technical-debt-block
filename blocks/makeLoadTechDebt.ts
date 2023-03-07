@@ -1,5 +1,7 @@
 import { TreeItem } from "@githubnext/blocks";
 
+const maximumNumberOfFilesShown = 30;
+
 export const makeLoadTechDebt =
   (loadCommits: (path: string) => Promise<unknown[]>) =>
   async (tree: TreeItem[]) => {
@@ -19,5 +21,5 @@ export const makeLoadTechDebt =
       }))
       .filter((file) => file.complexity > 0)
       .sort((file1, file2) => file2.complexity - file1.complexity)
-      .slice(0, 30);
+      .slice(0, maximumNumberOfFilesShown);
   };
