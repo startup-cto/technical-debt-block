@@ -35,7 +35,7 @@ export default function TechDebtBlock({
   }, [owner, repo, onRequestGitHubEndpoint, tree]);
 
   const availableKeys = ["ts", "js", "tsx", "jsx"];
-  const defaultKeys = ["ts"];
+  const defaultKeys = ["ts", "js", "tsx", "jsx", "css", "json", "yml", "yaml"];
   const [selectedExtensions, onSelectExtensions] = useState(
     defaultKeys.filter((key) => availableKeys.includes(key))
   );
