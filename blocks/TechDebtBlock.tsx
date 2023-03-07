@@ -7,6 +7,7 @@ import { File } from "./File";
 import { FileList } from "./FileList";
 import { makeLoadCommits } from "./makeLoadCommits";
 import { ExtensionSelector } from "./ExtensionSelector";
+import { getFileExtension } from "./getFileExtension";
 
 type Props = Pick<
   FolderBlockProps,
@@ -34,8 +35,10 @@ export default function TechDebtBlock({
     void loadTechDebt(tree).then(setFiles);
   }, [owner, repo, onRequestGitHubEndpoint, tree]);
 
-  const availableKeys = ["ts", "js", "tsx", "jsx"];
   const defaultKeys = ["ts", "js", "tsx", "jsx", "css", "json", "yml", "yaml"];
+  const availableKeys = tree
+    .map((treeItem) => getFileExtension(treeItem.path ?? ""))
+    .filter((extension) => extension !== "");
   const [selectedExtensions, onSelectExtensions] = useState(
     defaultKeys.filter((key) => availableKeys.includes(key))
   );
