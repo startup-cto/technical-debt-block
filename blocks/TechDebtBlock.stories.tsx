@@ -24,7 +24,11 @@ export const Default: Story = {
       sha: "sha",
       owner: "owner",
     },
-    tree: [{ type: "blob", path: "/test.ts", size: 3000 }],
+    tree: [
+      { type: "folder", path: "/.github" },
+      { type: "blob", path: "/test.ts", size: 3000 },
+      { type: "blob", path: "/another.ts", size: 2000 },
+    ],
     onRequestGitHubEndpoint: (_path, { page = 1 }: any = {}) =>
       Promise.resolve(page === 1 ? [{}] : []),
   },

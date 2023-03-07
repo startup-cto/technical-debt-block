@@ -22,9 +22,14 @@ export default function TechDebtBlock({
 }: Props) {
   const [files, setFiles] = useState<File[] | null>(null);
   const defaultKeys = ["ts", "js", "tsx", "jsx", "css", "json", "yml", "yaml"];
-  const availableKeys = tree
-    .map((treeItem) => getFileExtension(treeItem.path ?? ""))
-    .filter((extension) => extension !== "");
+  const availableKeys = [
+    ...new Set(
+      tree
+        .filter((treeItem) => treeItem.type === "blob")
+        .map((treeItem) => getFileExtension(treeItem.path ?? ""))
+        .filter((extension) => extension !== "")
+    ),
+  ];
   const [selectedExtensions, onSelectExtensions] = useState(
     defaultKeys.filter((key) => availableKeys.includes(key))
   );
