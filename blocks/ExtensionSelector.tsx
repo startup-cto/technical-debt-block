@@ -2,6 +2,15 @@ import { Button, SelectPanel } from "@primer/react";
 import { useState } from "react";
 import { TriangleDownIcon } from "@primer/octicons-react";
 
+const maximumExtensionsInList = 10;
+
+interface ItemInput {
+  id: string;
+  text: string;
+  showDivider?: boolean;
+  disabled?: boolean;
+}
+
 export function ExtensionSelector({
   selectedExtensions,
   onSelectExtensions,
@@ -12,11 +21,28 @@ export function ExtensionSelector({
   availableKeys: string[];
 }) {
   const [open, onOpenChange] = useState(false);
-  const [filter, onFilterChange] = useState("");
 
-  const availableItems = availableKeys.map((key) => ({ text: key, id: key }));
-  const items = availableItems.filter((item) =>
-    item.text.toLowerCase().startsWith(filter.toLowerCase())
+  const [filter, onFilterChange] = useState("");
+  const availableItems: ItemInput[] = availableKeys.map((key) => ({
+    text: key,
+    id: key,
+  }));
+  const filteredItems = availableItems
+    .filter((item) => item.text.toLowerCase().startsWith(filter.toLowerCase()))
+    .slice(0, maximumExtensionsInList);
+  const items = filteredItems.concat(
+    availableItems.length > filteredItems.length
+      ? [
+          {
+            text: `${
+              availableItems.length - filteredItems.length
+            } items hidden`,
+            id: "hidden",
+            showDivider: true,
+            disabled: true,
+          },
+        ]
+      : []
   );
 
   return (

@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import TechDebtBlock from "./TechDebtBlock";
 
-// More on how to set up stories at: https://storybook.js.org/docs/7.0/react/writing-stories/introduction
 const meta = {
   component: TechDebtBlock,
   tags: ["autodocs"],
@@ -11,19 +10,20 @@ const meta = {
   },
 } satisfies Meta<typeof TechDebtBlock>;
 
+const context = {
+  folder: "/",
+  path: "/",
+  repo: "repo",
+  sha: "sha",
+  owner: "owner",
+};
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
 export const Default: Story = {
   args: {
-    context: {
-      folder: "/",
-      path: "/",
-      repo: "repo",
-      sha: "sha",
-      owner: "owner",
-    },
+    context,
     tree: [
       { type: "folder", path: "/.github" },
       { type: "blob", path: "/test.ts", size: 3000 },
@@ -35,16 +35,35 @@ export const Default: Story = {
       }),
   },
 };
+export const With20Extensions: Story = {
+  args: {
+    context,
+    tree: [
+      { type: "folder", path: "/.github" },
+      { type: "blob", path: "/test.ts", size: 3000 },
+      { type: "blob", path: "/another.tsx", size: 2000 },
+      { type: "blob", path: "/test.js", size: 3000 },
+      { type: "blob", path: "/another.jsx", size: 2000 },
+      { type: "blob", path: "/test.yml", size: 3000 },
+      { type: "blob", path: "/another.yaml", size: 2000 },
+      { type: "blob", path: "/test.css", size: 3000 },
+      { type: "blob", path: "/another.scss", size: 2000 },
+      { type: "blob", path: "/test.md", size: 3000 },
+      { type: "blob", path: "/another.mdx", size: 2000 },
+      { type: "blob", path: "/.gitignore", size: 2000 },
+      { type: "blob", path: "/.eslintignore", size: 2000 },
+      { type: "blob", path: "/test.cjs", size: 2000 },
+    ],
+    onRequestGitHubEndpoint: (_path, { page = 1 }: any = {}) =>
+      new Promise((resolve) => {
+        setTimeout(() => resolve(page === 1 ? [{}] : []), 1000);
+      }),
+  },
+};
 
 export const Loading: Story = {
   args: {
-    context: {
-      folder: "/",
-      path: "/",
-      repo: "repo",
-      sha: "sha",
-      owner: "owner",
-    },
+    context,
     tree: [{ type: "blob", path: "/test.ts", size: 3000 }],
     onRequestGitHubEndpoint: () =>
       new Promise(() => {
@@ -55,13 +74,7 @@ export const Loading: Story = {
 
 export const Empty: Story = {
   args: {
-    context: {
-      folder: "/",
-      path: "/",
-      repo: "repo",
-      sha: "sha",
-      owner: "owner",
-    },
+    context,
     tree: [],
     onRequestGitHubEndpoint: () => Promise.resolve([]),
   },
