@@ -1,6 +1,8 @@
 # Technical Debt Block
 
-This GitHub block allows to discover technical debt in a repository and to roughly prioritize which files to clean up first/
+This GitHub block allows to discover technical debt in a repository and to roughly prioritize which files to clean up first.
+
+There's [an article](https://startup-cto.net/easily-identify-technical-debt-in-any-repository/?utm_source=startup-cto%2Ftechnical-debt-block&utm_medium=GitHub) with more details!
 
 ## Usage
 
