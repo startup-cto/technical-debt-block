@@ -30,7 +30,9 @@ export const Default: Story = {
       { type: "blob", path: "/another.ts", size: 2000 },
     ],
     onRequestGitHubEndpoint: (_path, { page = 1 }: any = {}) =>
-      Promise.resolve(page === 1 ? [{}] : []),
+      new Promise((resolve) => {
+        setTimeout(() => resolve(page === 1 ? [{}] : []), 1000);
+      }),
   },
 };
 
