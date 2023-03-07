@@ -1,5 +1,6 @@
-import { SelectPanel } from "@primer/react";
+import { Button, SelectPanel } from "@primer/react";
 import { useState } from "react";
+import { TriangleDownIcon } from "@primer/octicons-react";
 
 export function ExtensionSelector({
   selectedExtensions,
@@ -20,6 +21,19 @@ export function ExtensionSelector({
 
   return (
     <SelectPanel
+      renderAnchor={({
+        children,
+        "aria-labelledby": ariaLabelledBy,
+        ...anchorProps
+      }) => (
+        <Button
+          trailingAction={TriangleDownIcon}
+          aria-labelledby={` ${ariaLabelledBy ?? ""}`}
+          {...anchorProps}
+        >
+          {children || "Select file extensions"}
+        </Button>
+      )}
       placeholderText="Included file extensions"
       onOpenChange={onOpenChange}
       open={open}
