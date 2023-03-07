@@ -1,5 +1,5 @@
 import { FolderBlockProps } from "@githubnext/blocks";
-import { Box, Spinner } from "@primer/react";
+import { Box, SelectPanel, Spinner } from "@primer/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { makeLoadTechDebt } from "./makeLoadTechDebt";
@@ -32,6 +32,20 @@ export default function TechDebtBlock({
     );
     void loadTechDebt(tree).then(setFiles);
   }, [owner, repo, onRequestGitHubEndpoint, tree]);
+
+  const availableKeys = ["ts", "js", "tsx", "jsx"];
+  const defaultKeys = ["ts"];
+  const [open, onOpenChange] = useState(false);
+  const [filter, onFilterChange] = useState("");
+
+  const [selectedIds, setSelectedIds] = useState(
+    defaultKeys.filter((key) => availableKeys.includes(key))
+  );
+  const availableItems = availableKeys.map((key) => ({ text: key, id: key }));
+  const items = availableItems.filter((item) =>
+    item.text.toLowerCase().startsWith(filter.toLowerCase())
+  );
+
   return (
     <Box p={4}>
       <Box
@@ -48,7 +62,27 @@ export default function TechDebtBlock({
           borderBottomStyle="solid"
           borderColor="border.default"
         >
-          This is the folder content.
+          <SelectPanel
+            placeholderText="Included file extensions"
+            onOpenChange={onOpenChange}
+            open={open}
+            items={items}
+            selected={availableItems.filter((item) =>
+              selectedIds.includes(item.id)
+            )}
+            onFilterChange={onFilterChange}
+            onSelectedChange={(
+              items?:
+                | { text?: string; id?: string | number }[]
+                | { text?: string; id?: string | number }
+            ) => {
+              if (Array.isArray(items)) {
+                setSelectedIds(items.filter(hasId).map((item) => item.id));
+                return;
+              }
+              setSelectedIds(typeof items?.id !== "string" ? [] : [items.id]);
+            }}
+          />
         </Box>
         <Box p={4}>
           {files == null ? (
@@ -60,4 +94,8 @@ export default function TechDebtBlock({
       </Box>
     </Box>
   );
+}
+
+function hasId(val: unknown): val is { id: string } {
+  return typeof (val as { id: unknown }).id === "string";
 }
