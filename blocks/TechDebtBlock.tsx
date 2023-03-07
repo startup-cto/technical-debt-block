@@ -72,7 +72,6 @@ export default function TechDebtBlock({
           borderBottomWidth={1}
           borderBottomStyle="solid"
           borderColor="border.default"
-          style={{ display: "flex", gap: "1rem" }}
         >
           <ExtensionSelector
             selectedExtensions={selectedExtensions}
@@ -81,6 +80,11 @@ export default function TechDebtBlock({
           />
         </Box>
         <Box p={4}>
+          <p>
+            Files in this folder, sorted by their estimated technical debt.
+            Technical debt is calculated by multiplying the size in kB with the
+            number of commits that touched that file over the last 6 months.
+          </p>
           {loading ? (
             <Spinner />
           ) : (
